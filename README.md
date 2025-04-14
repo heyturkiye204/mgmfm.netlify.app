@@ -1,4 +1,4 @@
-# mgmfm.heytr.live
+# mgmfm.netlify.app
 <img width="200" align="right" src="https://raw.githubusercontent.com/heyturkiye204/mgmfm.heytr.live/cd21bf38497d1d3658e0e85c3c8b4c859aca8094/mgm-logo.svg" />
 Bu açık kaynak kodunda T.C. Çevre, Şehircilik ve İklim Değişikliği Bakanlığı Meteoroloji Genel Müdürlüğü tarafından oluşturulan sesli e-bülten haberlerini .mp3 dosya formatında siteye sunuyorum.
 
@@ -9,4 +9,4 @@ Bu açık kaynak kodunda T.C. Çevre, Şehircilik ve İklim Değişikliği Bakan
 * Site içindeki .mp3 dosyalarının telif hakları MGM'ye aittir. o yüzden sitedeki .mp3 dosyalarını [bilgi@mgm.gov.tr](mailto:bilgi@mgm.gov.tr) adresini bilgilendirmek şartıyla kullanabilirsiniz. Aksi takdirde tüm haklar (dava açma hakkı vs.) MGM'ye aittir.
 
 ## İletişim
-E-posta: [me@heytr.live](mailto:me@heytr.live)
+E-posta: [hayatdrubunu@gmail.com](mailto:hayatdrubunu@gmail.com)
