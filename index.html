@@ -1,160 +1,246 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="https://static.meteoblue.com/assets/images/picto/02_iday.svg" type="image/x-icon">
-    <title>Türkiye Hava Durumu | Meteoroloji Genel Müdürlüğü</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
-        body {
-            font-family: 'Montserrat', sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
 
-        .mgmPlayer {
-            margin-top: 20px;
-        }
-        .logo {
-            max-width: 25px;
-            margin-left: 20px;
-        }
-        a {
-            text-decoration: none;
-            color: #007BFF;
-        }
-        /* Bağlantıların altı çizgi olmadan ve mavi renkte olması */
-a {
-    text-decoration: none;
-    color: blue;
+<!DOCTYPE html>
+<html lang="tr" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MGM FM | Hey Türkiye</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-light: linear-gradient(135deg, #e0f7fa, #ffffff);
+      --bg-dark: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      --text-light: #1e1e1e;
+      --text-dark: #f1f1f1;
+      --card-light: #ffffffcc;
+      --card-dark: #1c1f26cc;
+      --accent: #4cd964;
+      --radius: 20px;
+      --shadow-light: 0 8px 30px rgba(0,0,0,0.1);
+      --shadow-dark: 0 8px 30px rgba(255,255,255,0.06);
+      --transition: 0.4s ease all;
+    }
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-    </style>
+
+html, body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--bg-light);
+  color: var(--text-light);
+  transition: var(--transition);
+  min-height: 100vh;
+}
+
+[data-theme="dark"] body {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 2rem 1rem;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 999;
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.ios-switch {
+  position: fixed;
+  width: 60px;
+  height: 34px;
+}
+
+.ios-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--accent);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.card {
+  background: var(--card-light);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-light);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(10px);
+  transition: var(--transition);
+}
+
+[data-theme="dark"] .card {
+  background: var(--card-dark);
+  box-shadow: var(--shadow-dark);
+}
+
+.card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+}
+
+audio {
+  width: 100%;
+  border-radius: 8px;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 3rem;
+  opacity: 0.6;
+}
+
+#datetime {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 0.95rem;
+  background-color: rgba(255,255,255,0.7);
+  color: #000;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  z-index: 9999;
+}
+[data-theme="dark"] #datetime {
+  background-color: rgba(0,0,0,0.5);
+  color: #fff;
+}
+
+  </style>
 </head>
 <body>
-
-<h1><img src="https://mgm.gov.tr/App_Themes/mgm/img/mgm-logo.svg" alt="Logo" class="logo"> • MGM FM</h1>
-
-<audio id="mgmPlayer1" class="mgmPlayer" src="https://www.mgm.gov.tr/Files/mp3/hava.mp3"></audio>
-
-<button onclick="playGunluk()">Günlük Aç</button>
-<button onclick="stopGunluk()">Günlük Kapat</button>
+  <div id="datetime"></div>  <div class="container">
+    <h1>MGM FM | Hey Türkiye</h1>
+    <div class="theme-toggle">
+    <label class="ios-switch">
+    <input type="checkbox" id="toggleTheme">
+    <span class="slider"></span>
+  </label>
+</div>
 <br>
 <br>
-<audio id="mgmPlayer2" class="mgmPlayer" src="https://www.mgm.gov.tr/Files/mp3/3Ghava.mp3"></audio>
 
-<button onclick="playUcGunluk()">3 Günlük Aç</button>
-<button onclick="stopUcGunluk()">3 Günlük Kapat</button>
+<div class="card">
+  <h2>Bugün Hava Tahmini</h2>
+  <audio controls src="https://mgm.gov.tr/Files/mp3/hava.mp3"></audio>
+</div>
 
-<br>
-<br>
-<a href="https://www.mgm.gov.tr/site/yasal-uyari.aspx">Meteoroloji Genel Müdürlüğü © 2024, Her hakkı saklıdır.</a>
-<br>
-<br>
-<div id="clock"></div>
-<script type="text/javascript">
-    function refrClock() {
-        var d = new Date();
-        var s = d.getSeconds();
-        var m = d.getMinutes();
-        var h = d.getHours();
-        var day = d.getDay();
-        var date = d.getDate();
-        var month = d.getMonth();
-        var year = d.getFullYear();
-        var days = new Array("Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi");
-        var months = new Array("Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık");
-        if (s < 10) {
-            s = "0" + s
-        }
-        if (m < 10) {
-            m = "0" + m
-        }
-        document.getElementById("clock").innerHTML = "<b>Tarih:</b> " + date + " " + months[month] + " " + year + " | <b>Günlerden:</b> " + days[day] + " | <b>Saat:</b> " + h + ":" + m + ":" + s + " "
-        setTimeout("refrClock()", 1000);
-    }
+<div class="card">
+  <h2>3 Günlük Hava Tahmini</h2>
+  <audio controls src="https://mgm.gov.tr/Files/mp3/3Ghava.mp3"></audio>
+</div>
 
-    refrClock();
-</script>
-<hr style="border: none; border-top: 5px solid black;">
-<h1>Siteler</h1>
-* <a href="https://mgmfm.heytr.live/">https://mgmfm.heytr.live/</a>
-<br>
-* <a href="https://www.mgmfm.heytr.live/">https://www.mgmfm.heytr.live/</a>
-<br>
-* <a href="https://havatahmini.heytr.live/">https://havatahmini.heytr.live/</a>
-<br>
-* <a href="https://www.havatahmini.heytr.live/">https://www.havatahmini.heytr.live/</a>
-<br>
-* <a href="https://havadurumu.heytr.live/">https://havadurumu.heytr.live/</a>
-<br>
-* <a href="https://www.havadurumu.heytr.live/">https://www.havadurumu.heytr.live/</a>
-<br>
-* <a href="https://meteoroloji.heytr.live/">https://meteoroloji.heytr.live/</a>
-<br>
-* <a href="https://www.meteoroloji.heytr.live/">https://www.meteoroloji.heytr.live/</a>
-<br>
-<script>
-    var mgmPlayer1 = document.getElementById('mgmPlayer1');
-    var mgmPlayer2 = document.getElementById('mgmPlayer2');
-    var isGunlukPlaying = false;
-    var isUcGunlukPlaying = false;
+<div class="card">
+  <h2>Deniz Hava Durumu</h2>
+  <audio controls src="https://mgm.gov.tr/Files/mp3/deniz.mp3"></audio>
+</div>
+  
+<div class="card">
+  <h2>3 Günlük Deniz Hava Durumu</h2>
+  <audio controls src="https://mgm.gov.tr/Files/mp3/3Gdeniz.mp3"></audio>
+</div>
 
-    function playGunluk() {
-        if (!isGunlukPlaying) {
-            if (isUcGunlukPlaying) {
-                alert('3 Günlük açık, lütfen onu kapatın.');
-            } else {
-                mgmPlayer1.play();
-                alert('MGM FM Günlük açılıyor.');
-            }
-        } else {
-            alert('MGM FM Günlük zaten açık.');
-        }
+<footer>
+  © 2025 Hey Türkiye | Ses: © 2025 Meteoroloji Genel Müdürlüğü
+</footer>
+  </div>  
+  <script>
+    const toggle = document.getElementById('toggleTheme');
+    const html = document.documentElement;
+    const audios = document.querySelectorAll('audio');
 
-        isGunlukPlaying = true;
-    }
+    // Tema kontrolü
+    toggle.addEventListener('change', () => {
+      const mode = toggle.checked ? 'dark' : 'light';
+      html.setAttribute('data-theme', mode);
+      localStorage.setItem('theme', mode);
+    });
 
-    function stopGunluk() {
-        if (isGunlukPlaying) {
-            mgmPlayer1.pause();
-            mgmPlayer1.currentTime = 0;
-            alert('MGM FM Günlük kapanıyor.');
-        } else {
-            alert('MGM FM Günlük zaten kapalı.');
-        }
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('theme') || 'light';
+      html.setAttribute('data-theme', saved);
+      toggle.checked = saved === 'dark';
+    });
 
-        isGunlukPlaying = false;
-    }
+    // Sadece bir MP3 çalsın
+    audios.forEach(audio => {
+      audio.addEventListener('play', () => {
+        audios.forEach(other => {
+          if (other !== audio && !other.paused) {
+            audio.pause();
+            alert('Açık mp3 varken başka mp3 çalamaz!');
+          }
+        });
+      });
+    });
 
-    function playUcGunluk() {
-        if (!isUcGunlukPlaying) {
-            if (isGunlukPlaying) {
-                alert('Günlük açık, lütfen onu kapatın.');
-            } else {
-                mgmPlayer2.play();
-                alert('MGM FM 3 Günlük açılıyor.');
-            }
-        } else {
-            alert('MGM FM 3 Günlük zaten açık.');
-        }
+    function updateDateTime() {
+  const now = new Date();
 
-        isUcGunlukPlaying = true;
-    }
+  // UTC+3 için manuel düzeltme
+  now.setHours(now.getHours());
 
-    function stopUcGunluk() {
-        if (isUcGunlukPlaying) {
-            mgmPlayer2.pause();
-            mgmPlayer2.currentTime = 0;
-            alert('MGM FM 3 Günlük kapanıyor.');
-        } else {
-            alert('MGM FM 3 Günlük zaten kapalı.');
-        }
+  const days = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+  const months = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
 
-        isUcGunlukPlaying = false;
-    }
-</script>
+  const dayName = days[now.getDay()];
+  const date = now.getDate().toString().padStart(2, '0');
+  const month = months[now.getMonth()];
+  const year = now.getFullYear();
+  const time = now.toTimeString().split(' ')[0];
 
+  document.getElementById('datetime').innerHTML =
+    `Bugün günlerden <strong>${date} ${month} ${year} ${dayName}</strong>, Saat: <strong>${time}'ı gösteriyor.</strong>`;
+}
+
+setInterval(updateDateTime, 1000);
+updateDateTime();
+  </script>
 </body>
 </html>
