@@ -2,8 +2,8 @@
 <html lang="tr" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MGM FM | Hey Türkiye Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MGM FM | Hey Türkiye</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;600;700;800;900&display=swap" rel="stylesheet">
@@ -15,20 +15,17 @@
       theme: {
         extend: {
           fontFamily: { sans: ['Montserrat', 'sans-serif'] },
-          colors: { caramel: '#af7a39', cocoa: '#2d1b0d' },
+          colors: { caramel: '#af7a39', studio: '#0c0c0c' },
           animation: {
-            'morph': 'morph 15s ease-in-out infinite',
-            'float-slow': 'float 10s ease-in-out infinite',
+            'text-slide': 'text-slide 25s linear infinite',
+            'float-slow': 'float 8s ease-in-out infinite',
+            'shimmer': 'shimmer 3s linear infinite',
+            'pulse-soft': 'pulse-soft 4s ease-in-out infinite',
           },
           keyframes: {
-            morph: {
-              '0%, 100%': { 'border-radius': '40% 60% 70% 30% / 40% 50% 60% 50%' },
-              '50%': { 'border-radius': '70% 30% 50% 50% / 30% 30% 70% 70%' },
-            },
-            float: {
-              '0%, 100%': { transform: 'translate(0,0)' },
-              '50%': { transform: 'translate(20px, -20px)' },
-            }
+            'text-slide': { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-50%)' } },
+            'shimmer': { '0%': { 'background-position': '-200% 0' }, '100%': { 'background-position': '200% 0' } },
+            'pulse-soft': { '0%, 100%': { opacity: 0.3 }, '50%': { opacity: 0.6 } }
           }
         }
       }
@@ -36,98 +33,181 @@
   </script>
 
   <style>
-    body { background: #fff9f2; transition: background 0.8s ease; overflow-x: hidden; }
-    .dark body { background: #0a0502; }
-    .caramel-glass {
-      background: rgba(255, 245, 235, 0.4);
-      backdrop-filter: blur(25px);
-      border: 1px solid rgba(175, 122, 57, 0.15);
-      border-radius: 3.5rem;
-      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    :root { --accent: #af7a39; }
+    
+    /* Gelişmiş Arka Plan Dokusu */
+    body { 
+      background: #fcfaf7; 
+      overflow-x: hidden; 
+      -webkit-font-smoothing: antialiased;
+      position: relative;
     }
-    .dark .caramel-glass { background: rgba(45, 27, 13, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); }
-    .nav-btn { background: rgba(175, 122, 57, 0.08); border: 1px solid rgba(175, 122, 57, 0.15); }
-    .progress-track { height: 6px; background: rgba(175, 122, 57, 0.1); border-radius: 10px; overflow: hidden; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, #af7a39, #edae5a); width: 0; transition: width 0.2s linear; }
-    .play-pill { box-shadow: 0 15px 35px -5px rgba(175, 122, 57, 0.3); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    .lava-blob { position: fixed; width: 600px; height: 600px; background: radial-gradient(circle, rgba(175, 122, 57, 0.12) 0%, rgba(0,0,0,0) 70%); z-index: -1; pointer-events: none; }
+    body::before {
+      content: "";
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3 Atem%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.04; pointer-events: none; z-index: 50;
+    }
+    .dark body { background: #050505; }
+    .dark body::before { opacity: 0.07; }
+
+    /* Parallax Metin Efekti */
+    .bg-kinetic {
+      position: fixed; top: 55%; left: 0; transform: translateY(-50%);
+      font-size: 30vh; font-weight: 900; color: rgba(175, 122, 57, 0.02);
+      white-space: nowrap; z-index: -1; pointer-events: none; text-transform: uppercase;
+      letter-spacing: -0.05em;
+    }
+
+    /* Hi-End Studio Card */
+    .studio-card {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(40px) saturate(180%);
+      -webkit-backdrop-filter: blur(40px) saturate(180%);
+      border: 1px solid rgba(175, 122, 57, 0.08);
+      box-shadow: 0 30px 70px -20px rgba(0,0,0,0.03);
+      border-radius: 3.5rem;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .dark .studio-card {
+      background: rgba(15, 15, 15, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      box-shadow: 0 50px 100px -30px rgba(0,0,0,0.7);
+    }
+    .studio-card:hover {
+      transform: translateY(-15px) scale(1.01);
+      border-color: rgba(175, 122, 57, 0.4);
+      background: rgba(255, 255, 255, 0.8);
+    }
+    .dark .studio-card:hover {
+        background: rgba(20, 20, 20, 0.6);
+        border-color: rgba(175, 122, 57, 0.3);
+    }
+
+    /* Dynamic Audio Meter Gelişmiş */
+    .meter-bar { width: 3px; background: linear-gradient(to top, var(--accent), #fff); border-radius: 4px; height: 6px; transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0.3; }
+    .playing .meter-bar { animation: peak 0.8s infinite alternate; opacity: 1; }
+    @keyframes peak { 0% { height: 6px; } 100% { height: 45px; } }
+
+    /* Progress Glow */
+    .progress-wrap { position: relative; height: 2px; background: rgba(175,122,57,0.05); border-radius: 10px; overflow: hidden; }
+    .progress-glow {
+      height: 100%; width: 0; background: linear-gradient(90deg, transparent, var(--accent), #fff, var(--accent), transparent);
+      background-size: 200% 100%; animation: shimmer 3s linear infinite;
+      box-shadow: 0 0 20px var(--accent);
+    }
+
+    .stroke-text { -webkit-text-stroke: 1px var(--accent); color: transparent; filter: drop-shadow(0 0 2px rgba(175, 122, 57, 0.2)); }
+    
+    /* Özel Buton Glow */
+    .play-btn {
+        box-shadow: 0 15px 45px -10px rgba(0,0,0,0.3);
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .playing .play-btn {
+        box-shadow: 0 0 40px -5px rgba(175, 122, 57, 0.4);
+        background: var(--accent);
+    }
   </style>
 </head>
-<body class="text-cocoa dark:text-orange-50/90 antialiased">
+<body class="text-studio dark:text-white font-sans">
 
-  <div class="lava-blob animate-morph top-[-200px] left-[-100px]"></div>
-  <div class="lava-blob animate-morph bottom-[-200px] right-[-100px]" style="animation-delay: -5s; opacity: 0.15;"></div>
+  <div class="bg-kinetic animate-text-slide">
+    MGM FM &nbsp; HEY TÜRKİYE &nbsp; MGM FM &nbsp; HEY TÜRKİYE &nbsp; 
+  </div>
 
-  <nav class="p-6 md:p-10 flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto relative z-50 gap-8">
-    <div class="flex flex-col items-center md:items-start">
-      <div class="flex items-center gap-2 mb-1">
-        <div class="w-2 h-2 bg-caramel rounded-full animate-pulse"></div>
-        <span class="text-[10px] font-black tracking-[0.5em] text-caramel uppercase italic">Hey Türkiye Studio</span>
+  <nav class="sticky top-6 z-[100] max-w-[1400px] mx-auto px-6">
+    <div class="studio-card !rounded-2xl px-10 py-5 flex justify-between items-center border-caramel/10">
+      <div class="flex items-center gap-8">
+        <div class="flex flex-col">
+          <span class="text-[8px] font-black tracking-[0.4em] text-caramel uppercase mb-1">Live Broadcast</span>
+          <h1 class="text-3xl font-black tracking-tighter uppercase">MGM <span class="stroke-text">FM</span></h1>
+        </div>
       </div>
-      <h1 class="text-4xl font-black tracking-tighter leading-none">MGM <span class="font-thin italic opacity-50">AUDIO</span></h1>
-    </div>
 
-    <div class="flex flex-col items-center glass px-8 py-3 rounded-3xl border border-caramel/10 bg-caramel/5">
-      <div id="live-time" class="text-3xl font-black tracking-tighter tabular-nums text-caramel">00:00:00</div>
-      <div id="live-date" class="text-[10px] font-bold uppercase tracking-widest opacity-60">-- --- ----</div>
-    </div>
+      <div class="hidden lg:flex items-center gap-16">
+        <div class="flex flex-col items-center">
+            <div id="live-time" class="text-4xl font-black tabular-nums tracking-tighter text-caramel">00:00:00</div>
+            <div id="live-date" class="text-[9px] font-bold opacity-30 uppercase tracking-[0.6em] mt-1">-- -- ----</div>
+        </div>
+      </div>
 
-    <div class="flex items-center gap-4">
-      <button id="langToggle" class="nav-btn px-6 py-2.5 rounded-2xl text-[11px] font-black tracking-widest transition-all">EN</button>
-      <button id="themeToggle" class="nav-btn p-3 rounded-2xl hover:bg-caramel hover:text-white transition-all">
-        <i data-lucide="sun" class="w-5 h-5"></i>
-      </button>
+      <div class="flex items-center gap-4">
+        <button id="langToggle" class="group relative px-6 py-2 overflow-hidden rounded-full border border-caramel/20 text-[10px] font-black tracking-widest transition-all hover:border-caramel">
+            <span class="relative z-10">EN</span>
+            <div class="absolute inset-0 bg-caramel translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+        </button>
+        <button id="themeToggle" class="w-12 h-12 rounded-full bg-studio dark:bg-caramel text-white flex items-center justify-center hover:rotate-12 transition-all">
+          <i data-lucide="zap" class="w-5 h-5 fill-current"></i>
+        </button>
+      </div>
     </div>
   </nav>
 
-  <main class="max-w-7xl mx-auto px-6 pt-6 pb-20">
-    <div class="max-w-3xl mb-16 md:mb-24 text-center md:text-left">
-      <h2 id="mainTitle" class="text-5xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.85]">
-        Havanın <br/><span class="text-caramel">Ritmine Kapıl.</span>
-      </h2>
-      <p id="subTitle" class="text-lg md:text-xl font-medium opacity-60 leading-relaxed border-l-0 md:border-l-2 border-caramel/30 md:pl-6">
-        Hey Türkiye'nin zarif tasarımı, MGM'nin güncel ses verileriyle buluştu. Her güncelleme anında burada.
-      </p>
-    </div>
+  <main class="max-w-[1500px] mx-auto px-6 mt-32">
+    <section class="mb-40 relative">
+      <div class="absolute -top-20 -left-10 w-64 h-64 bg-caramel/5 blur-[120px] rounded-full"></div>
+      
+      <div class="inline-flex items-center gap-4 px-6 py-2.5 rounded-full border border-caramel/10 mb-12 bg-white/5 backdrop-blur-md">
+        <div class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-caramel opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-caramel"></span>
+        </div>
+        <span class="text-[9px] font-black tracking-[0.3em] uppercase opacity-50">Signal Frequency: 102.4 MHz</span>
+      </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <h2 id="mainTitle" class="text-[11vw] md:text-[8.5rem] font-black leading-[0.8] tracking-tighter uppercase mb-14">
+        Atmosferin <br/><span class="stroke-text italic">Akustik</span> <br/>Yüzü.
+      </h2>
+      <div class="flex flex-col md:flex-row gap-12 items-end">
+          <p id="subTitle" class="text-xl md:text-3xl font-light opacity-30 max-w-3xl leading-[1.1] tracking-tight">
+            MGM FM, Türkiye'nin hava ve deniz ses verilerini minimalist bir estetikle kulaklarınıza ulaştırır. Canlı veri, saf ses.
+          </p>
+          <div class="flex-1 h-[1px] bg-caramel/10 mb-4 hidden md:block"></div>
+      </div>
+    </section>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10 pb-40">
       <script>
-        const reports = [
-          { id: 'today', tr: 'Günlük Rapor', en: 'Daily Report', icon: 'sun-medium', color: 'from-orange-400 to-caramel', url: 'https://mgm.gov.tr/Files/mp3/hava.mp3' },
-          { id: '3day', tr: '3 Günlük Hava', en: '3-Day Forecast', icon: 'wind', color: 'from-caramel to-amber-700', url: 'https://mgm.gov.tr/Files/mp3/3Ghava.mp3' },
-          { id: 'sea', tr: 'Denizlerin Sesi', en: 'Marine Sounds', icon: 'waves', color: 'from-amber-600 to-caramel', url: 'https://mgm.gov.tr/Files/mp3/deniz.mp3' },
-          { id: '3sea', tr: '3 Günlük Deniz', en: '3-Day Marine', icon: 'anchor', color: 'from-caramel to-yellow-800', url: 'https://mgm.gov.tr/Files/mp3/3Gdeniz.mp3' }
+        const stations = [
+          { t: 'Günlük Rapor', e: 'Daily Report', i: 'mic-2', u: 'https://mgm.gov.tr/Files/mp3/hava.mp3', tag: 'ANLIK' },
+          { t: '3 Günlük Hava', e: '3-Day Forecast', i: 'radio', u: 'https://mgm.gov.tr/Files/mp3/3Ghava.mp3', tag: 'GENİŞ' },
+          { t: 'Denizlerin Sesi', e: 'Sea Waves', i: 'waves', u: 'https://mgm.gov.tr/Files/mp3/deniz.mp3', tag: 'MARİNE' },
+          { t: 'Geniş Deniz', e: 'Oceanic View', i: 'anchor', u: 'https://mgm.gov.tr/Files/mp3/3Gdeniz.mp3', tag: '3-DAY' }
         ];
 
-        document.write(reports.map(r => `
-          <div class="caramel-glass group p-8 flex flex-col justify-between min-h-[400px]">
-            <div>
-              <div class="flex justify-between items-start mb-10">
-                <div class="bg-gradient-to-br ${r.color} p-4 rounded-3xl text-white shadow-lg">
-                  <i data-lucide="${r.icon}" class="w-6 h-6"></i>
+        document.write(stations.map((s, i) => `
+          <div class="studio-card group p-12 flex flex-col justify-between min-h-[620px] relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-caramel/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            
+            <div class="relative z-10">
+              <div class="flex justify-between items-start mb-24">
+                <div class="w-24 h-24 bg-white dark:bg-white/5 rounded-[2.5rem] flex items-center justify-center group-hover:bg-caramel transition-all duration-500 shadow-xl group-hover:shadow-caramel/20 group-hover:-translate-y-2">
+                  <i data-lucide="${s.i}" class="w-10 h-10 text-caramel group-hover:text-white transition-colors"></i>
                 </div>
-                <div class="flex gap-1 h-6 items-end opacity-0 group-[.playing]:opacity-100 transition-opacity">
-                  <div class="w-1 bg-caramel rounded-full animate-bounce" style="height: 60%"></div>
-                  <div class="w-1 bg-caramel rounded-full animate-bounce" style="height: 100%; animation-delay: 0.2s"></div>
-                  <div class="w-1 bg-caramel rounded-full animate-bounce" style="height: 80%; animation-delay: 0.1s"></div>
+                <div class="flex gap-2 h-12 items-end">
+                  ${[1,2,3,4,5,6].map(x => `<div class="meter-bar" style="animation-delay: ${x*0.15}s"></div>`).join('')}
                 </div>
               </div>
-              <h3 class="text-2xl font-black tracking-tighter leading-tight card-title" data-tr="${r.tr}" data-en="${r.en}">${r.tr}</h3>
-              <p class="text-[9px] font-black uppercase tracking-[0.2em] opacity-30 mt-4 lang-label" data-tr="MGM RESMİ GÜNCELLEME" data-en="MGM OFFICIAL UPDATE">MGM RESMİ GÜNCELLEME</p>
+
+              <div class="space-y-4">
+                <span class="text-[9px] font-black tracking-[0.3em] text-caramel border border-caramel/20 px-4 py-1.5 rounded-full bg-caramel/5 uppercase">${s.tag}</span>
+                <h3 class="text-5xl font-black tracking-tighter leading-[0.9] card-title" data-tr="${s.t}" data-en="${s.e}">${s.t}</h3>
+              </div>
             </div>
 
-            <div class="mt-8">
-              <div class="progress-track mb-6">
-                <div class="progress-fill"></div>
+            <div class="relative z-10 space-y-10">
+              <div class="progress-wrap">
+                <div class="progress-glow"></div>
               </div>
-              
+
               <div class="flex items-center justify-between">
-                <button onclick="playAudio(this, '${r.url}')" class="play-pill w-20 h-20 bg-caramel rounded-[2rem] flex items-center justify-center text-white">
-                  <i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>
+                <button onclick="playAudio(this, '${s.u}')" class="play-btn w-24 h-24 bg-studio dark:bg-white/10 text-white rounded-[2.8rem] flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+                  <i data-lucide="play" class="w-10 h-10 fill-current ml-1"></i>
                 </button>
                 <div class="text-right">
-                  <span class="text-[9px] font-bold opacity-40 block lang-label" data-tr="FORMAT" data-en="FORMAT">FORMAT</span>
-                  <span class="font-black text-caramel tracking-tighter">MP3 AUDIO</span>
+                  <div class="text-[8px] font-bold opacity-30 tracking-[0.3em] uppercase mb-1">Source Audio</div>
+                  <div class="text-2xl font-black text-caramel tracking-tighter">ULTRA-FI</div>
                 </div>
               </div>
             </div>
@@ -137,94 +217,89 @@
     </div>
   </main>
 
-  <footer class="py-16 text-center">
-    <div class="max-w-xl mx-auto px-6">
-      <div class="h-[1px] bg-gradient-to-r from-transparent via-caramel/20 to-transparent mb-8"></div>
-      <p id="footer-text" class="text-[10px] font-black tracking-[0.5em] uppercase opacity-40 leading-loose">
-        HTML TASARIMI HEY TÜRKİYE TARAFINDAN YAPILMIŞTIR &bull; SES VERİLERİ MGM'YE AİTTİR &bull; 2025
-      </p>
+  <footer class="py-32 bg-studio text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-5">
+        <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,var(--accent)_0%,transparent_70%)]"></div>
+    </div>
+    <div class="max-w-[1400px] mx-auto px-6 text-center relative z-10">
+      <h5 class="text-8xl md:text-[12rem] font-black italic stroke-text mb-12 opacity-20">MGM FM</h5>
+      <p id="footer-text" class="text-[10px] font-black tracking-[2em] uppercase opacity-40">Hey Türkiye Precision Design &bull; 2025</p>
     </div>
   </footer>
 
   <script>
     lucide.createIcons();
-
-    let currentAudio = null;
-    let currentBtn = null;
-    let lang = 'tr';
+    let currentAudio = null, currentBtn = null, lang = 'tr';
 
     const langData = {
       tr: {
-        title: 'Havanın <br/><span class="text-caramel">Ritmine Kapıl.</span>',
-        sub: "Hey Türkiye'nin zarif tasarımı, MGM'nin güncel ses verileriyle buluştu. Her güncelleme anında burada.",
-        footer: "HTML TASARIMI HEY TÜRKİYE TARAFINDAN YAPILMIŞTIR &bull; SES VERİLERİ MGM'YE AİTTİR &bull; 2025"
+        title: 'Atmosferin <br/><span class="stroke-text italic">Akustik</span> <br/>Yüzü.',
+        sub: "MGM FM, Türkiye'nin hava ve deniz ses verilerini minimalist bir estetikle kulaklarınıza ulaştırır. Canlı veri, saf ses.",
+        footer: "Hey Türkiye Precision Design &bull; 2025"
       },
       en: {
-        title: 'Catch the <br/><span class="text-caramel">Rhythm of Sky.</span>',
-        sub: "Hey Türkiye's elegant design meets MGM's current audio data. Every update is instantly here.",
-        footer: "HTML DESIGN BY HEY TÜRKİYE &bull; AUDIO DATA BY MGM &bull; 2025"
+        title: 'Acoustic <br/><span class="stroke-text italic">Face</span> <br/>of Air.',
+        sub: "MGM FM brings Turkey's weather and marine audio data to your ears with a minimalist aesthetic. Live data, pure sound.",
+        footer: "Hey Türkiye Precision Design &bull; 2025"
       }
     };
 
-    // Zaman ve Tarih Güncelleme (TR ve EN Formatlı)
     function updateDateTime() {
       const now = new Date();
-      const timeStr = now.toLocaleTimeString('tr-TR', { hour12: false });
-      document.getElementById('live-time').textContent = timeStr;
-
-      const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
-      const dateStr = now.toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US', dateOptions);
-      document.getElementById('live-date').textContent = dateStr;
+      const options = { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      document.getElementById('live-time').textContent = now.toLocaleTimeString('tr-TR', options);
+      document.getElementById('live-date').textContent = now.toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' });
     }
-    setInterval(updateDateTime, 1000);
-    updateDateTime();
+    setInterval(updateDateTime, 1000); updateDateTime();
 
-    // Dil Değiştirme
     document.getElementById('langToggle').addEventListener('click', function() {
       lang = lang === 'tr' ? 'en' : 'tr';
-      this.textContent = lang === 'tr' ? 'EN' : 'TR';
-      
+      this.querySelector('span').textContent = lang === 'tr' ? 'EN' : 'TR';
       document.getElementById('mainTitle').innerHTML = langData[lang].title;
       document.getElementById('subTitle').textContent = langData[lang].sub;
-      document.getElementById('footer-text').innerHTML = langData[lang].footer;
-
       document.querySelectorAll('.card-title').forEach(t => t.textContent = t.getAttribute(`data-${lang}`));
-      document.querySelectorAll('.lang-label').forEach(l => l.textContent = l.getAttribute(`data-${lang}`));
-      
-      updateDateTime(); // Tarih formatını hemen güncelle
+      updateDateTime();
     });
 
-    document.getElementById('themeToggle').addEventListener('click', () => document.documentElement.classList.toggle('dark'));
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+    });
 
-    // Audio Engine
     function playAudio(btn, url) {
-      const card = btn.closest('.caramel-glass');
-      const progress = card.querySelector('.progress-fill');
-
+      const card = btn.closest('.studio-card'), progress = card.querySelector('.progress-glow');
+      
       if (currentAudio && currentAudio.src.includes(url)) {
         if (currentAudio.paused) { currentAudio.play(); toggleUI(btn, true); }
         else { currentAudio.pause(); toggleUI(btn, false); }
         return;
       }
-
-      if (currentAudio) { currentAudio.pause(); toggleUI(currentBtn, false); }
-
+      
+      if (currentAudio) { 
+        currentAudio.pause(); 
+        toggleUI(currentBtn, false); 
+        const prevProgress = currentBtn.closest('.studio-card').querySelector('.progress-glow');
+        prevProgress.style.width = '0%';
+      }
+      
       currentAudio = new Audio(`${url}?cache=${Date.now()}`);
-      currentBtn = btn;
-      currentAudio.play();
+      currentBtn = btn; 
+      currentAudio.play(); 
       toggleUI(btn, true);
-
-      currentAudio.ontimeupdate = () => {
-        progress.style.width = (currentAudio.currentTime / currentAudio.duration) * 100 + '%';
+      
+      currentAudio.ontimeupdate = () => { 
+        const pct = (currentAudio.currentTime / currentAudio.duration) * 100;
+        progress.style.width = pct + '%'; 
       };
-      currentAudio.onended = () => { toggleUI(btn, false); progress.style.width = '0%'; };
+      
+      currentAudio.onended = () => { 
+        toggleUI(btn, false); 
+        progress.style.width = '0%'; 
+      };
     }
 
     function toggleUI(btn, playing) {
-      const card = btn.closest('.caramel-glass');
-      btn.innerHTML = playing ? 
-        '<i data-lucide="pause" class="w-10 h-10 fill-current"></i>' : 
-        '<i data-lucide="play" class="w-10 h-10 fill-current ml-1"></i>';
+      const card = btn.closest('.studio-card');
+      btn.innerHTML = playing ? '<i data-lucide="pause" class="w-10 h-10 fill-current"></i>' : '<i data-lucide="play" class="w-10 h-10 fill-current ml-1"></i>';
       playing ? card.classList.add('playing') : card.classList.remove('playing');
       lucide.createIcons();
     }
